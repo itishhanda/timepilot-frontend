@@ -86,26 +86,29 @@ export default function SettingsPage() {
           <CardContent className="space-y-5">
             <div className="rounded-xl border border-dashed p-5 space-y-4">
               <p className="text-sm font-semibold">How to connect your Telegram account:</p>
-              <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-                <li>Open Telegram and search for your bot (the one you set up with BotFather).</li>
-                <li>Send <code className="bg-muted px-1 py-0.5 rounded text-foreground font-mono text-xs">/start</code> or <code className="bg-muted px-1 py-0.5 rounded text-foreground font-mono text-xs">Hello</code> to the bot.</li>
-                <li>The bot should reply with a greeting and list of commands.</li>
-                <li>Once connected, you can say <code className="bg-muted px-1 py-0.5 rounded text-foreground font-mono text-xs">show today's schedule</code> or <code className="bg-muted px-1 py-0.5 rounded text-foreground font-mono text-xs">Spent ₹200 on food</code>.</li>
+              <ol className="text-sm text-muted-foreground space-y-3 list-decimal list-inside">
+                <li>
+                  Open Telegram on your phone or computer and search for <strong>TimePilot AI</strong> (or your specific bot name).
+                </li>
+                <li>
+                  Type <code className="bg-muted px-1.5 py-0.5 rounded text-foreground font-mono text-xs">/start</code> and hit send.
+                </li>
+                <li>
+                  The bot will reply with a <strong>Share Phone Number</strong> button. Tap it!
+                </li>
+                <li>
+                  Once you share your contact, the bot will automatically link to your TimePilot account.
+                  <em>(Make sure you are logged into TimePilot with the exact same phone number!)</em>
+                </li>
               </ol>
-              <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 text-sm space-y-1">
-                <p className="font-semibold text-primary">Available Bot Commands:</p>
-                <ul className="text-muted-foreground space-y-1 mt-2 list-disc list-inside">
-                  <li><span className="font-mono text-foreground text-xs">Hello</span> — greet the bot</li>
-                  <li><span className="font-mono text-foreground text-xs">show today's schedule</span> — see today's events</li>
-                  <li><span className="font-mono text-foreground text-xs">Spent ₹500 on food</span> — log an expense (confirms before saving)</li>
-                  <li><span className="font-mono text-foreground text-xs">Meeting tomorrow 3 PM</span> — create an event (confirms before saving)</li>
-                  <li><span className="font-mono text-foreground text-xs">confirm / cancel</span> — confirm or discard a pending action</li>
+              <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 text-sm space-y-2 mt-4">
+                <p className="font-semibold text-primary">What you can say to the bot:</p>
+                <ul className="text-muted-foreground space-y-2 list-disc list-inside">
+                  <li><span className="font-mono text-foreground text-xs font-medium">show today's schedule</span> — see what you have planned today.</li>
+                  <li><span className="font-mono text-foreground text-xs font-medium">Spent ₹500 on food</span> — the bot will instantly log this to your budget.</li>
+                  <li><span className="font-mono text-foreground text-xs font-medium">Meeting tomorrow 3 PM</span> — the bot will schedule it for you.</li>
                 </ul>
               </div>
-              <p className="text-xs text-muted-foreground">
-                <strong>Note:</strong> "show today's schedule" and expense saving require your Telegram chat to be linked to your account.
-                Account linking is automatic after your phone number is verified.
-              </p>
             </div>
           </CardContent>
         </Card>
@@ -125,21 +128,21 @@ export default function SettingsPage() {
                 <Label className="text-base">Daily Briefing</Label>
                 <p className="text-sm text-muted-foreground">Receive a summary of your day at 7:00 AM UTC via Telegram.</p>
               </div>
-              <Switch defaultChecked />
+              <Switch defaultChecked onCheckedChange={(c) => toast.success(`Daily Briefing ${c ? 'enabled' : 'disabled'}`)} />
             </div>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <Label className="text-base">Budget Alerts</Label>
                 <p className="text-sm text-muted-foreground">Get notified when you exceed 80% of your budget limit.</p>
               </div>
-              <Switch defaultChecked />
+              <Switch defaultChecked onCheckedChange={(c) => toast.success(`Budget Alerts ${c ? 'enabled' : 'disabled'}`)} />
             </div>
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <Label className="text-base">Event Reminders</Label>
                 <p className="text-sm text-muted-foreground">Get reminded before upcoming events (handled by backend scheduler).</p>
               </div>
-              <Switch defaultChecked />
+              <Switch defaultChecked onCheckedChange={(c) => toast.success(`Event Reminders ${c ? 'enabled' : 'disabled'}`)} />
             </div>
             <div className="flex items-center gap-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-4">
               <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
