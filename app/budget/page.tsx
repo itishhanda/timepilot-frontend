@@ -138,8 +138,15 @@ export default function BudgetPage() {
   };
 
   // Calculations
-  const totalLimit = budgets.reduce((acc, b) => acc + b.monthly_limit, 0);
-  const totalSpent = budgets.reduce((acc, b) => acc + b.current_spent, 0);
+  const budgetsWithSpent = budgets.map((b) => {
+    const spent = expenses
+      .filter((e) => e.category.toLowerCase() === b.category.toLowerCase())
+      .reduce((acc, e) => acc + parseFloat(e.amount), 0);
+    return { ...b, current_spent: spent };
+  });
+
+  const totalLimit = budgetsWithSpent.reduce((acc, b) => acc + parseFloat(b.monthly_limit), 0);
+  const totalSpent = budgetsWithSpent.reduce((acc, b) => acc + b.current_spent, 0);
   const totalProgress = totalLimit > 0 ? (totalSpent / totalLimit) * 100 : 0;
 
   return (
@@ -185,12 +192,12 @@ export default function BudgetPage() {
 
           {/* Individual Budgets Grid */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {budgets.length === 0 ? (
+            {budgetsWithSpent.length === 0 ? (
               <div className="col-span-full p-12 text-center border rounded-xl bg-card text-muted-foreground">
                 No budgets set up yet. Create one to start tracking.
               </div>
             ) : (
-              budgets.map((b: any) => {
+              budgetsWithSpent.map((b: any) => {
                 const progress = (b.current_spent / b.monthly_limit) * 100;
                 const isOver = progress >= 100;
                 const isWarning = progress >= 80 && !isOver;
@@ -208,7 +215,7 @@ export default function BudgetPage() {
                     <CardContent className="space-y-4">
                       <div className="flex justify-between text-sm">
                         <span className={isOver ? "text-destructive font-bold" : ""}>Spent: ₹{b.current_spent.toLocaleString()}</span>
-                        <span className="text-muted-foreground">Limit: ₹{b.monthly_limit.toLocaleString()}</span>
+                        <span className="text-muted-foreground">Limit: ₹{parseFloat(b.monthly_limit).toLocaleString()}</span>
                       </div>
                       <Progress 
                         value={progress} 

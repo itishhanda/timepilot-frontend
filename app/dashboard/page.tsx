@@ -21,7 +21,7 @@ export default function DashboardPage() {
         apiClient.get("/overview").catch(() => ({ data: {} })),
         apiClient.get("/analytics/daily").catch(() => ({ data: {} })),
         apiClient.get("/streaks").catch(() => ({ data: {} })),
-        apiClient.get("/ai/insights").catch(() => ({ data: [] }))
+        apiClient.get("/insights/generate").catch(() => ({ data: [] }))
       ]);
       setData({
         overview: overviewRes.data,

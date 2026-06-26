@@ -62,7 +62,7 @@ export default function SchedulePage() {
       const payload = {
         ...formData,
         start_datetime: new Date(formData.start_datetime).toISOString(),
-        end_datetime: new Date(formData.end_datetime).toISOString(),
+        end_datetime: formData.end_datetime ? new Date(formData.end_datetime).toISOString() : null,
       };
 
       if (selectedEvent) {
@@ -98,8 +98,16 @@ export default function SchedulePage() {
     const startIso = new Date(event.start_datetime);
     const startLocal = new Date(startIso.getTime() - startIso.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     
-    const endIso = new Date(event.end_datetime);
-    const endLocal = new Date(endIso.getTime() - endIso.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    let endLocal = "";
+    if (event.end_datetime) {
+      const endIso = new Date(event.end_datetime);
+      endLocal = new Date(endIso.getTime() - endIso.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    } else {
+      // Default to 1 hour after start
+      const defaultEnd = new Date(startIso);
+      defaultEnd.setHours(defaultEnd.getHours() + 1);
+      endLocal = new Date(defaultEnd.getTime() - defaultEnd.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    }
 
     setFormData({
       title: event.title,
@@ -338,7 +346,6 @@ export default function SchedulePage() {
                 <Label>End Time</Label>
                 <Input 
                   type="datetime-local" 
-                  required 
                   value={formData.end_datetime}
                   onChange={e => setFormData({...formData, end_datetime: e.target.value})}
                 />

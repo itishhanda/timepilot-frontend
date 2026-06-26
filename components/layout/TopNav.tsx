@@ -34,7 +34,7 @@ export default function TopNav({ isSidebarOpen, setIsSidebarOpen }: { isSidebarO
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/events/stream?token=${token}`);
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/events/stream?token=${token}`);
 
     eventSource.addEventListener("update", (e) => {
       try {

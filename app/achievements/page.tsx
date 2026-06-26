@@ -25,8 +25,8 @@ export default function AchievementsPage() {
           apiClient.get("/rewards"),
           apiClient.get("/streaks")
         ]);
-        setRewards(rewRes.data);
-        setStreaks(strRes.data);
+        setRewards(rewRes.data || []);
+        setStreaks(strRes.data || []);
       } catch (e) {
         toast.error("Failed to load achievements");
       } finally {
