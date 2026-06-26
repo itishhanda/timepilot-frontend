@@ -59,11 +59,46 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Telegram Integration</CardTitle>
+          <CardDescription>Manage your schedule using natural language on Telegram</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between p-4 bg-primary/10 rounded-xl">
-            <div><p className="font-bold text-primary">Connected to Bot</p><p className="text-sm text-muted-foreground">Status: Active</p></div>
-            <Button variant="outline" onClick={() => window.open("https://t.me/timepilot_ai_bot", "_blank")}>Open Telegram</Button>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between p-4 bg-primary/10 rounded-xl border border-primary/20">
+            <div>
+              <p className="font-bold text-primary flex items-center">
+                <span className="relative flex h-3 w-3 mr-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                </span>
+                Connected to Bot
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">Ready to receive your commands</p>
+            </div>
+            <Button onClick={() => window.open("https://t.me/timepilot_ai_bot", "_blank")}>Open Telegram</Button>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">How to use</h3>
+            <div className="grid gap-3">
+              <div className="p-3 bg-muted/50 rounded-lg text-sm">
+                <span className="font-semibold block mb-1">📅 Schedule Events</span>
+                <code>"Schedule a team meeting tomorrow at 3pm"</code>
+              </div>
+              <div className="p-3 bg-muted/50 rounded-lg text-sm">
+                <span className="font-semibold block mb-1">💰 Log Expenses</span>
+                <code>"Spent 500 on lunch today"</code>
+              </div>
+              <div className="p-3 bg-muted/50 rounded-lg text-sm">
+                <span className="font-semibold block mb-1">⏰ Set Reminders</span>
+                <code>"Remind me to call John in 2 hours"</code>
+              </div>
+              <div className="p-3 bg-muted/50 rounded-lg text-sm border border-primary/20 bg-primary/5">
+                <span className="font-semibold text-primary block mb-1">🤖 Ask AI for Insights</span>
+                <code>"Do I have time for a 1-hour gym session today?"</code>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground pt-2">
+              The AI will automatically parse your message, detect the intent, and ask for confirmation before saving.
+            </p>
           </div>
         </CardContent>
       </Card>

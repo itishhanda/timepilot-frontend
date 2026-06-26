@@ -53,16 +53,22 @@ export default function SchedulePage() {
     fetchEvents();
   }, []);
 
+  const parseLocalString = (localStr: string) => {
+    if (!localStr) return null;
+    const [datePart, timePart] = localStr.split('T');
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hours, minutes] = (timePart || "00:00").split(':').map(Number);
+    return new Date(year, month - 1, day, hours, minutes).toISOString();
+  };
+
   // --- CRUD Operations ---
   const handleSaveEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Ensure ISO format with Z (UTC) or local offset for backend if needed
-      // Here we assume backend handles naive or local ISO strings correctly, or we can enforce ISO:
       const payload = {
         ...formData,
-        start_datetime: new Date(formData.start_datetime).toISOString(),
-        end_datetime: formData.end_datetime ? new Date(formData.end_datetime).toISOString() : null,
+        start_datetime: parseLocalString(formData.start_datetime)!,
+        end_datetime: formData.end_datetime ? parseLocalString(formData.end_datetime) : null,
       };
 
       if (selectedEvent) {
@@ -341,6 +347,7 @@ export default function SchedulePage() {
                 <Input 
                   type="datetime-local" 
                   required 
+                  className="pr-8"
                   value={formData.start_datetime}
                   onChange={e => setFormData({...formData, start_datetime: e.target.value})}
                 />
@@ -349,6 +356,7 @@ export default function SchedulePage() {
                 <Label>End Time</Label>
                 <Input 
                   type="datetime-local" 
+                  className="pr-8"
                   value={formData.end_datetime}
                   onChange={e => setFormData({...formData, end_datetime: e.target.value})}
                 />
