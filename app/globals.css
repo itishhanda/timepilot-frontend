@@ -162,3 +162,11 @@
 .animate-fade-in {
   animation: fadeIn 0.3s ease both;
 }
+
+/* ── Form Control Fixes ─────────────────────────────────────────────────── */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  margin-right: 4px;
+}
