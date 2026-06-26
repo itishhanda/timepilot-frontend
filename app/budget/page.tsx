@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Plus, Edit2, Trash2, IndianRupee, PieChart, Receipt } from "lucide-react";
+import { Plus, Edit2, Trash2, PieChart, Receipt } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function BudgetPage() {

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Menu, Bell, Search, Sun, Moon, Check, X } from "lucide-react";
+import { Menu, Bell, Search, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth/context";
 import { useTheme } from "next-themes";
