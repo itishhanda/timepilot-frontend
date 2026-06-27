@@ -55,7 +55,7 @@ export default function LoginPage() {
   };
 
   const openTelegram = () => {
-    window.open("https://t.me/productivityhelper_bot", "_blank");
+    window.open("https://t.me/timepilot_ai_bot", "_blank");
     setStep(2);
   };
 

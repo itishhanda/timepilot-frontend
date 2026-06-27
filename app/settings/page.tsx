@@ -110,7 +110,7 @@ export default function SettingsPage() {
               </p>
               <p className="text-sm text-muted-foreground mt-1">Ready to receive your commands</p>
             </div>
-            <Button onClick={() => window.open("https://t.me/productivityhelper_bot", "_blank")}>Open Telegram</Button>
+            <Button onClick={() => window.open("https://t.me/timepilot_ai_bot", "_blank")}>Open Telegram</Button>
           </div>
 
           <div className="space-y-4">
