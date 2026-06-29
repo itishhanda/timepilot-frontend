@@ -522,7 +522,7 @@ export default function SettingsPage() {
         <CardContent>
           <div className="flex items-center justify-between p-4 bg-primary/10 rounded-xl">
             <div><p className="font-bold text-primary">Connected to Bot</p><p className="text-sm text-muted-foreground">Status: Active</p></div>
-            <Button variant="outline" onClick={() => window.open("https://t.me/timepilot_ai_bot", "_blank")}>Open Telegram</Button>
+            <Button variant="outline" onClick={() => window.open("https://t.me/productivityhelper_bot", "_blank")}>Open Telegram</Button>
           </div>
         </CardContent>
       </Card>
