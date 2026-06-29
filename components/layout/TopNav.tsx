@@ -153,6 +153,26 @@ export default function TopNav({ isSidebarOpen, setIsSidebarOpen }: { isSidebarO
     else router.push("/dashboard");
   };
 
+  const handleNotificationAction = async (e: React.MouseEvent, action: string, eventId: number, notifId: number) => {
+    e.stopPropagation();
+    try {
+      if (action === "complete") {
+        await apiClient.delete(`/events/${eventId}`);
+        toast.success("Event completed!");
+      } else if (action === "snooze") {
+        await apiClient.post(`/events/${eventId}/snooze`);
+        toast.success("Event snoozed for 10 minutes.");
+      } else if (action === "cancel") {
+        await apiClient.delete(`/events/${eventId}`);
+        toast.success("Event cancelled.");
+      }
+      // Remove or mark the notification as read locally
+      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, read: true } : n));
+    } catch (err) {
+      toast.error(`Failed to ${action} event.`);
+    }
+  };
+
   return (
     <>
       <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card/80 backdrop-blur-md px-4 md:px-6 sticky top-0 z-40">
@@ -200,12 +220,26 @@ export default function TopNav({ isSidebarOpen, setIsSidebarOpen }: { isSidebarO
                   <div className="p-4 text-center text-sm text-muted-foreground">No new notifications</div>
                 ) : (
                   notifications.map(n => (
-                    <DropdownMenuItem key={n.id} className="flex justify-between items-start p-3 cursor-default border-b last:border-0">
-                      <div className="flex gap-2 items-start">
+                    <DropdownMenuItem key={n.id} className="flex flex-col items-start p-3 cursor-default border-b last:border-0 hover:bg-transparent focus:bg-transparent">
+                      <div className="flex gap-2 items-start w-full">
                         {!n.read && <div className="mt-1.5 h-2 w-2 rounded-full bg-primary shrink-0" />}
-                        <div>
+                        <div className="flex-1">
                           <span className={`text-sm block ${n.read ? 'text-muted-foreground' : 'font-medium'}`}>{n.text}</span>
                           <span className="text-[10px] text-muted-foreground">{n.timestamp.toLocaleTimeString()}</span>
+                          
+                          {n.data?.event_id && !n.read && (
+                            <div className="flex gap-2 mt-2 w-full flex-wrap">
+                              <Button size="sm" variant="outline" className="h-6 text-[10px] px-2" onClick={(e) => handleNotificationAction(e, "complete", n.data.event_id, n.id)}>
+                                ✅ Complete
+                              </Button>
+                              <Button size="sm" variant="outline" className="h-6 text-[10px] px-2" onClick={(e) => handleNotificationAction(e, "snooze", n.data.event_id, n.id)}>
+                                ⏰ Snooze
+                              </Button>
+                              <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 text-destructive border-destructive/20 hover:bg-destructive/10" onClick={(e) => handleNotificationAction(e, "cancel", n.data.event_id, n.id)}>
+                                ❌ Cancel
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </DropdownMenuItem>

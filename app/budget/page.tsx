@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { Plus, Edit2, Trash2, PieChart, Receipt } from "lucide-react";
+import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function BudgetPage() {
@@ -182,22 +184,59 @@ export default function BudgetPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Master Budget Card */}
-          <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-end mb-4">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Total Monthly Budget</p>
-                  <h2 className="text-4xl font-bold">₹{totalSpent.toLocaleString()} <span className="text-xl text-muted-foreground font-normal">/ ₹{totalLimit.toLocaleString()}</span></h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Master Budget Card */}
+            <Card className="lg:col-span-2 bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
+              <CardContent className="p-6 h-full flex flex-col justify-center">
+                <div className="flex justify-between items-end mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-1">Total Monthly Budget</p>
+                    <h2 className="text-4xl font-bold">₹{totalSpent.toLocaleString()} <span className="text-xl text-muted-foreground font-normal">/ ₹{totalLimit.toLocaleString()}</span></h2>
+                  </div>
+                  <div className="text-right hidden md:block">
+                    <p className="text-sm font-medium text-muted-foreground mb-1">Remaining</p>
+                    <p className="text-2xl font-bold text-primary">₹{Math.max(0, totalLimit - totalSpent).toLocaleString()}</p>
+                  </div>
                 </div>
-                <div className="text-right hidden md:block">
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Remaining</p>
-                  <p className="text-2xl font-bold text-primary">₹{Math.max(0, totalLimit - totalSpent).toLocaleString()}</p>
-                </div>
-              </div>
-              <Progress value={totalProgress} className="h-3" />
-            </CardContent>
-          </Card>
+                <Progress value={totalProgress} className="h-3 mb-2" />
+                <p className="text-xs text-muted-foreground text-right">{totalProgress.toFixed(1)}% used</p>
+              </CardContent>
+            </Card>
+
+            {/* Pie Chart Card */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Spending Breakdown</CardTitle>
+              </CardHeader>
+              <CardContent className="h-[200px]">
+                {totalSpent > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsPieChart>
+                      <Pie
+                        data={budgetsWithSpent.filter(b => (b.spent || b.current_spent) > 0)}
+                        dataKey="spent"
+                        nameKey="category"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={50}
+                        outerRadius={80}
+                        paddingAngle={2}
+                      >
+                        {budgetsWithSpent.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={`hsl(var(--primary) / ${0.9 - (index * 0.15)})`} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => `₹${Number(value).toLocaleString()}`} />
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
+                    No spending data yet
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Individual Budgets Grid */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
